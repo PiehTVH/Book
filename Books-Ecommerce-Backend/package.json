@@ -1,0 +1,36 @@
+{
+  "name": "books-ecommerce-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "kafkajs": "^2.2.4",
+    "lodash": "^4.17.21",
+    "mysql2": "^3.11.0",
+    "nodemailer": "^6.9.14",
+    "nodemon": "^3.1.4",
+    "os": "^0.1.2",
+    "redis": "^4.7.0",
+    "redis-server": "^1.2.2",
+    "sequelize": "^6.37.3",
+    "vnpay": "^1.6.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "compression": "^1.7.4",
+    "helmet": "^7.1.0",
+    "mongoose": "^8.6.0",
+    "morgan": "^1.10.0"
+  }
+}
