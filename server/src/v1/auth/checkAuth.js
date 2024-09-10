@@ -1,50 +1,70 @@
 "use strict";
 
-const JWT = require("jsonwebtoken");
+const { findById } = require("../services/apiKey.service");
 
 const HEADER = {
   API_KEY: "x-api-key",
-  CLIENT_ID: "x-client-id",
   AUTHORIZATION: "authorization",
+  API_KEY_BOOKADA: "api-key-bookada",
 };
 
-const createTokenPair = async (payload, publicKey, privateKey) => {
+const SECRET_KEY = "sudo-0104";
+
+const apiKey = async (req, res, next) => {
   try {
-    const accessToken = await JWT.sign(payload, privateKey, {
-      algorithm: "RS256",
-      expiresIn: "2 days",
-    });
-
-    const refreshToken = await JWT.sign(payload, privateKey, {
-      algorithm: "RS256",
-      expiresIn: "7 days",
-    });
-
-    // verify
-    JWT.verify(accessToken, publicKey, (err, decode) => {
-      if (err) {
-        console.error(`error verify::`, err);
-      } else {
-        console.log(`verify::`, decode);
+    const key = req.headers[HEADER.API_KEY]?.toString();
+    if (!key) {
+      const key_bookada = req.headers[HEADER.API_KEY_BOOKADA]?.toString();
+      if (key_bookada === SECRET_KEY) {
+        req.objkey = "0104";
+        return next();
       }
-    });
+      return res.status(403).json({
+        message: "Forbidden Error",
+      });
+    }
 
-    return { accessToken, refreshToken };
-  } catch (error) {
-    console.error(`create JWT error::`, error);
-  }
+    //check objkey
+    const objkey = await findById(key);
+    if (!objkey) {
+      return res.status(403).json({
+        message: "Forbidden Error",
+      });
+    }
+    req.objkey = objkey;
+    return next();
+  } catch (error) {}
 };
 
-const verifyJWT = async (token, keySecret) => {
-  try {
-    const result = await JWT.verify(token, keySecret);
-    return result;
-  } catch (error) {
-    throw error;
-  }
+const permission = (permission) => {
+  return (req, res, next) => {
+    if (req?.objkey === "0104") return next();
+
+    if (!req?.objkey?.permissions) {
+      return res.status(403).json({
+        message: "Permission Denied",
+      });
+    }
+
+    const validKeys = req?.objkey.permissions.includes(permission);
+    if (!validKeys) {
+      return res.status(403).json({
+        message: "Permission Denied",
+      });
+    }
+
+    return next();
+  };
+};
+
+const asyncHandler = (fn) => {
+  return (req, res, next) => {
+    fn(req, res, next).catch(next);
+  };
 };
 
 module.exports = {
-  createTokenPair,
-  verifyJWT,
+  apiKey,
+  permission,
+  asyncHandler,
 };

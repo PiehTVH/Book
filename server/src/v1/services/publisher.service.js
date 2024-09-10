@@ -1,5 +1,9 @@
+"use strict";
+
+const db = require("../models/sequelize/models");
+
 class PublisherService {
-  // Info for : Profile info page
+  // Info for: Profile info page
   static getAllPublisher = async () => {
     const publisher = await db.publisher.findAll({
       attributes: [
@@ -14,5 +18,4 @@ class PublisherService {
     };
   };
 }
-
 module.exports = PublisherService;

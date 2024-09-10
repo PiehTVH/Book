@@ -17,6 +17,18 @@ const development = {
   mysql_db_1: {
     alias: process.env.MYSQL_DB_ALIAS_MASTER || "mydb",
   },
+
+  payment: {
+    paypal_data: {
+      clientId: process.env.DEV_PAYMENT_PAYPAL_CLIENT_ID,
+      clientSecret: process.env.DEV_PAYMENT_PAYPAL_CLIENT_SECRET,
+    },
+    vnpay_data: {
+      clientId: process.env.DEV_PAYMENT_VNPAY_CLIENT_ID,
+      clientSecret: process.env.DEV_PAYMENT_VNPAY_CLIENT_SECRET,
+      apiHost: process.env.DEV_PAYMENT_VNPAY_API_HOST,
+    },
+  },
 };
 
 const config = { development };
