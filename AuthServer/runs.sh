@@ -1,0 +1,1 @@
+docker run --network=restaurantorderservices_my_custom_network -e DB_HOST=db -e REDIS_HOST=myredis -e REDIS_PORT=6379 -e DB_USERNAME=root -e DB_PASSWORD=a -e JWT_SECRET=edwyg4aebo  -e JWT_REFRESH_SECRET=2e0d94835e4f76eff03f6bdff49e37f3c433719ffa27e4aba8e18266ef7c2d45 -e DB_NAME=auth_server -p 8000:8000 auth_server:1.0 

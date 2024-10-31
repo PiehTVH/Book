@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: restaurant_services_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - my-db_data:/var/lib/mysql
+    networks:
+      - my_custom_network
+
+networks:
+  my_custom_network:
+    driver: bridge
+
+volumes:
+  my-db_data:
